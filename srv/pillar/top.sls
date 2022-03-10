@@ -1,0 +1,5 @@
+base:
+  '*':
+    - default
+  '*raspberry*':
+    - raspberrypi

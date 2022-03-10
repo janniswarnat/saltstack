@@ -1,0 +1,41 @@
+version: '3.5'
+services:
+  salt:
+    #image: "saltstack/salt"
+    image: "janniswarnat/salt:latest"
+    build: ./build_master
+    ports:
+      - "4505-4506:4505-4506"
+      - "8000:8000"
+    container_name: "salt"
+    volumes:
+      - ./etc_master/salt/pki/master/master.pem:/etc/salt/pki/master/master.pem
+      - ./etc_master/salt/pki/master/master.pub:/etc/salt/pki/master/master.pub
+      - ./srv/salt:/srv/salt
+      - ./srv/pillar:/srv/pillar
+    environment:
+      - SALT_SHARED_SECRET=GCUrcjS8J5wrcdtbWpjV
+      - 'SALT_MASTER_CONFIG={
+                              "file_roots": {
+                                "base": [
+                                  "/srv/salt/"
+                                ]
+                              },
+                              "pillar_roots": {
+                                "base": [
+                                  "/srv/pillar/"
+                                ]
+                              }
+                            }
+                            '
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+        max-file: "3"
+  salt-minion:
+    image: "janniswarnat/salt-minion:latest"
+    build: ./build_minion
+    volumes:
+      - ./etc_minion/salt/minion:/etc/salt/minion
+    entrypoint: ["salt-minion", "--log-level", "debug"]
