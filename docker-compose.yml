@@ -21,10 +21,11 @@ services:
       - ./etc_master/salt/foreman.yaml:/etc/salt/foreman.yaml
       - ./etc_master/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
       - ./prefix-log:/usr/local/bin/prefix-log
+ #     - ./foreman_minion_auth.sls:/var/lib/foreman-proxy/salt/reactors/foreman_minion_auth.sls
     environment:
       - SALT_SHARED_SECRET=GCUrcjS8J5wrcdtbWpjV
       - 'SALT_MASTER_CONFIG={
-                              "log_level": "debug",
+                              "log_level": "warn",
                               "file_roots": {
                                 "base": [
                                   "/srv/salt/"
