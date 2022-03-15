@@ -71,4 +71,3 @@ services:
 networks:
   default:
       name: salt-with-foreman
-      external: true
