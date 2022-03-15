@@ -33,6 +33,7 @@ RUN mkdir -p /var/log/supervisor
 ENTRYPOINT ["/usr/bin/dumb-init"]
 CMD ["/usr/local/bin/saltinit"]
 ADD saltinit.py /usr/local/bin/saltinit
+RUN chmod u+rwx /usr/local/bin/saltinit
 EXPOSE 4505 4506 8000 9000
 VOLUME /etc/salt/pki/
 
