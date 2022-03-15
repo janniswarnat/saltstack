@@ -1,0 +1,12 @@
+---
+:enabled: true
+:autosign_file: /etc/salt/autosign.conf
+:autosign_key_file: /var/lib/foreman-proxy/salt/grains/autosign_key
+:salt_command_user: root
+# Some features require using the Salt API - such as listing
+# environments and retrieving state info
+:use_api: true
+:api_url: http://localhost:8000
+:api_auth: sharedsecret
+:api_username: salt
+:api_password: GCUrcjS8J5wrcdtbWpjV

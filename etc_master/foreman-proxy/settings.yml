@@ -1,0 +1,11 @@
+---
+:settings_directory: "/etc/foreman-proxy/settings.d"
+:trusted_hosts:
+  - localhost
+  - foreman-app-1.salt-with-foreman
+:daemon: true
+:bind_host:
+- 0.0.0.0
+:http_port: 9000
+:log_file: STDOUT
+:log_level: DEBUG

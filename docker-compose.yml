@@ -7,15 +7,24 @@ services:
     ports:
       - "4505-4506:4505-4506"
       - "8000:8000"
-    container_name: "salt"
+      - "9000:9000"
+    entrypoint: ["/usr/bin/supervisord"]
     volumes:
       - ./etc_master/salt/pki/master/master.pem:/etc/salt/pki/master/master.pem
       - ./etc_master/salt/pki/master/master.pub:/etc/salt/pki/master/master.pub
       - ./srv/salt:/srv/salt
       - ./srv/pillar:/srv/pillar
+      - ./etc_master/foreman-proxy/settings.yml:/etc/foreman-proxy/settings.yml
+      - ./etc_master/foreman-proxy/settings.d/salt.yml:/etc/foreman-proxy/settings.d/salt.yml
+      - ./etc_master/foreman-proxy/settings.d/dynflow.yml:/etc/foreman-proxy/settings.d/dynflow.yml
+      - ./etc_master/salt/master.d/foreman.conf:/etc/salt/master.d/foreman.conf
+      - ./etc_master/salt/foreman.yaml:/etc/salt/foreman.yaml
+      - ./etc_master/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+      - ./prefix-log:/usr/local/bin/prefix-log
     environment:
       - SALT_SHARED_SECRET=GCUrcjS8J5wrcdtbWpjV
       - 'SALT_MASTER_CONFIG={
+                              "log_level": "debug",
                               "file_roots": {
                                 "base": [
                                   "/srv/salt/"
@@ -28,14 +37,38 @@ services:
                               }
                             }
                             '
+      - 'SALT_API_CONFIG={
+                            "rest_cherrypy":{
+                               "port":8000,
+                               "disable_ssl":true
+                            },
+                            "external_auth":{
+                               "sharedsecret":{
+                                  "salt":[
+                                     ".*",
+                                     "@wheel",
+                                     "@jobs",
+                                     "@runner"
+                                  ]
+                               }
+                            },
+                            "sharedsecret":"GCUrcjS8J5wrcdtbWpjV"
+                         }
+                         '
     logging:
       driver: "json-file"
       options:
         max-size: 10m
         max-file: "3"
+
   salt-minion:
     image: "janniswarnat/salt-minion:latest"
     build: ./build_minion
     volumes:
       - ./etc_minion/salt/minion:/etc/salt/minion
     entrypoint: ["salt-minion", "--log-level", "debug"]
+
+networks:
+  default:
+      name: salt-with-foreman
+      external: true
