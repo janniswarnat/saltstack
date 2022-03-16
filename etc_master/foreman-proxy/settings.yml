@@ -2,7 +2,7 @@
 :settings_directory: "/etc/foreman-proxy/settings.d"
 :trusted_hosts:
   - localhost
-  - foreman_app_1.salt-with-foreman
+  - foreman-app-1.salt-with-foreman
 :daemon: true
 :bind_host:
 - 0.0.0.0
