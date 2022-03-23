@@ -1,7 +1,6 @@
 version: '3.5'
 services:
   salt:
-    #image: "saltstack/salt"
     image: "janniswarnat/salt:latest"
     build: ./build_master
     ports:
@@ -10,22 +9,48 @@ services:
       - "9000:9000"
       - "1234:1234"
     entrypoint: ["/usr/bin/supervisord"]
-    volumes:
-      - ./etc_master/salt/pki/master/master.pem:/etc/salt/pki/master/master.pem
-      - ./etc_master/salt/pki/master/master.pub:/etc/salt/pki/master/master.pub
-      - ./etc_master/salt/pki/master/master.pem:/var/lib/salt/pki/master/master.pem
-      - ./etc_master/salt/pki/master/master.pub:/var/lib/salt/pki/master/master.pub
-      - ./etc_master/salt/pki/master/minions/raspberrypi:/etc/salt/pki/master/minions/raspberrypi
-      - ./etc_master/salt/pki/master/minions/docker-salt-minion:/etc/salt/pki/master/minions/docker-salt-minion
-      - ./srv/salt:/srv/salt
-      - ./srv/pillar:/srv/pillar
-      - ./etc_master/foreman-proxy/settings.yml:/github.com/smart-proxy/config/settings.yml
-      - ./etc_master/foreman-proxy/settings.d/salt.yml:/github.com/smart-proxy/config/settings.d/salt.yml
-      - ./etc_master/foreman-proxy/settings.d/dynflow.yml:/github.com/smart-proxy/config/settings.d/dynflow.yml
-      - ./etc_master/salt/master.d/foreman.conf:/etc/salt/master.d/foreman.conf
-      - ./etc_master/salt/foreman.yaml:/etc/salt/foreman.yaml
-      - ./etc_master/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
-      - ./prefix-log:/usr/local/bin/prefix-log
+#    volumes:
+#      - ./etc_master/salt/pki/master/master.pem:/etc/salt/pki/master/master.pem
+#      - ./etc_master/salt/pki/master/master.pub:/etc/salt/pki/master/master.pub
+#      - ./etc_master/salt/pki/master/master.pem:/var/lib/salt/pki/master/master.pem
+#      - ./etc_master/salt/pki/master/master.pub:/var/lib/salt/pki/master/master.pub
+#      - ./etc_master/salt/pki/master/minions/docker-salt-minion:/etc/salt/pki/master/minions/docker-salt-minion
+#      - ./srv/salt:/srv/salt
+#      - ./srv/pillar:/srv/pillar
+#      - ./etc_master/foreman-proxy/settings.yml:/github.com/smart-proxy/config/settings.yml
+#      - ./etc_master/foreman-proxy/settings.d/salt.yml:/github.com/smart-proxy/config/settings.d/salt.yml
+#      - ./etc_master/foreman-proxy/settings.d/dynflow.yml:/github.com/smart-proxy/config/settings.d/dynflow.yml
+#      - ./etc_master/salt/master.d/foreman.conf:/etc/salt/master.d/foreman.conf
+#      - ./etc_master/salt/foreman.yaml:/etc/salt/foreman.yaml
+#      - ./etc_master/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+#      - ./prefix-log:/usr/local/bin/prefix-log
+    secrets:
+      - source: master-private-key
+        target: "/etc/salt/pki/master/master.pem"
+#      - source: master-private-key
+#        target: "/var/lib/salt/pki/master/master.pem"
+    configs:
+#      - source: minion_public_key
+#        target: "/etc/salt/pki/master/minions/docker-salt-minion"
+#        uid: '103'
+#        gid: '103'
+#        mode: 0440
+#      - source: master-public-key
+#        target: "/var/lib/salt/pki/master/master.pub"
+      - source: master-public-key
+        target: "/etc/salt/pki/master/master.pub"
+      - source: foreman-proxy-settings
+        target: "/github.com/smart-proxy/config/settings.yml"
+      - source: foreman-proxy-salt-settings
+        target: "/github.com/smart-proxy/config/settings.d/salt.yml"
+      - source: foreman-proxy-dynflow-settings
+        target: "/github.com/smart-proxy/config/settings.d/dynflow.yml"
+      - source: foreman-conf
+        target: "/etc/salt/master.d/foreman.conf"
+      - source: foreman-yaml
+        target: "/etc/salt/foreman.yaml"
+      - source: supervisor-conf
+        target: "/etc/supervisor/supervisord.conf"
     environment:
       - SALT_SHARED_SECRET=GCUrcjS8J5wrcdtbWpjV
       - 'SALT_MASTER_CONFIG={
@@ -69,12 +94,42 @@ services:
   salt-minion:
     image: "janniswarnat/salt-minion:latest"
     build: ./build_minion
-    volumes:
-      - ./etc_minion/salt/minion:/etc/salt/minion
-      - ./etc_minion/salt/pki/minion/minion.pem:/var/lib/salt/pki/minion/minion.pem
-      - ./etc_minion/salt/pki/minion/minion.pub:/var/lib/salt/pki/minion/minion.pub
     entrypoint: ["salt-minion", "--log-level", "debug"]
+    secrets:
+      - source: minion-private-key
+        target: "/var/lib/salt/pki/minion/minion.pem"
+    configs:
+      - source: minion-public-key
+        target: "/var/lib/salt/pki/minion/minion.pub"
+      - source: minion-config
+        target: /etc/salt/minion
 
 networks:
   default:
       name: salt-with-foreman
+
+secrets:
+  minion-private-key:
+    file: "./etc_minion/salt/pki/minion/minion.pem"
+  master-private-key:
+    file: "./etc_master/salt/pki/master/master.pem"
+
+configs:
+  master-public-key:
+    file: "./etc_master/salt/pki/master/master.pub"
+  minion-public-key:
+    file: "./etc_minion/salt/pki/minion/minion.pub"
+  minion-config:
+    file: "./etc_minion/salt/minion"
+  foreman-proxy-settings:
+    file: "./etc_master/foreman-proxy/settings.yml"
+  foreman-proxy-salt-settings:
+    file: "./etc_master/foreman-proxy/settings.d/salt.yml"
+  foreman-proxy-dynflow-settings:
+    file: "./etc_master/foreman-proxy/settings.d/dynflow.yml"
+  foreman-conf:
+    file: "./etc_master/salt/master.d/foreman.conf"
+  foreman-yaml:
+    file: "./etc_master/salt/foreman.yaml"
+  supervisor-conf:
+    file: "./etc_master/supervisor/supervisord.conf"

@@ -56,6 +56,8 @@ ADD debug.rb /github.com/smart-proxy/bundler.d/debug.rb
 RUN bundle config set --local without 'development test krb5 puppet_proxy_legacy bmc libvirt journald'
 RUN bundle install
 
+ADD prefix-log /usr/local/bin/prefix-log
+
 #WORKDIR /github.com/smart_proxy_salt
 #RUN bundle install
 
