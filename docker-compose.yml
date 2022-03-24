@@ -91,6 +91,9 @@ services:
       options:
         max-size: 10m
         max-file: "3"
+    labels:
+      kompose.service.type: loadbalancer
+      kompose.service.expose: "true"
 
   salt-minion:
     image: "janniswarnat/salt-minion:latest"

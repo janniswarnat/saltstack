@@ -3,6 +3,8 @@ kind: Service
 metadata:
   annotations:
     kompose.cmd: kompose convert
+    kompose.service.expose: "true"
+    kompose.service.type: loadbalancer
     kompose.version: 1.26.1 (a9d05d509)
   creationTimestamp: null
   labels:
@@ -19,13 +21,16 @@ spec:
     - name: "8000"
       port: 8000
       targetPort: 8000
+      nodePort: 30000
     - name: "9000"
       port: 9000
       targetPort: 9000
+      nodePort: 31000
     - name: "1234"
       port: 1234
       targetPort: 1234
   selector:
     io.kompose.service: salt
+  type: LoadBalancer
 status:
   loadBalancer: {}
