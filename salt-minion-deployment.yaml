@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: salt-minion
+  name: salt-minion
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: salt-minion
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: salt-minion
+    spec:
+      containers:
+        - command:
+            - salt-minion
+            - --log-level
+            - info
+          image: janniswarnat/salt-minion:latest
+          name: salt-minion
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/salt/pki/minion/minion.pem
+              name: minion-pem
+              subPath: minion.pem
+            - mountPath: /var/lib/salt/pki/minion/minion.pub
+              name: minion-pub
+              subPath: minion.pub
+            - mountPath: /etc/salt/minion
+              name: minion
+              subPath: minion
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: minion.pem
+                path: minion.pem
+            name: minion-pem
+          name: minion-pem
+        - configMap:
+            items:
+              - key: minion.pub
+                path: minion.pub
+            name: minion-pub
+          name: minion-pub
+        - configMap:
+            items:
+              - key: minion
+                path: minion
+            name: minion
+          name: minion
+status: {}

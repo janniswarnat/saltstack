@@ -1,0 +1,131 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: salt
+  name: salt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: salt
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: salt
+    spec:
+      containers:
+        - command:
+            - /bin/sh
+            - -c
+            - mkdir -p /etc/salt/pki/master/minions && cp /tmp/docker-salt-minion /etc/salt/pki/master/minions && /usr/bin/supervisord
+          env:
+            - name: SALT_API_CONFIG
+              value: '{ "rest_cherrypy":{ "port":8000, "disable_ssl":true }, "external_auth":{ "sharedsecret":{ "salt":[ ".*", "@wheel", "@jobs", "@runner" ] } }, "sharedsecret":"GCUrcjS8J5wrcdtbWpjV" } '
+            - name: SALT_MASTER_CONFIG
+              value: '{ "log_level": "info", "file_roots": { "base": [ "/srv/salt/" ] }, "pillar_roots": { "base": [ "/srv/pillar/" ] } } '
+            - name: SALT_SHARED_SECRET
+              value: GCUrcjS8J5wrcdtbWpjV
+          image: janniswarnat/salt:latest
+          name: salt
+          ports:
+            - containerPort: 4505
+            - containerPort: 4506
+            - containerPort: 8000
+            - containerPort: 9000
+            - containerPort: 1234
+          resources: {}
+          volumeMounts:
+            - mountPath: /etc/salt/pki/master/master.pem
+              name: master-pem
+              subPath: master.pem
+            - mountPath: /etc/salt/pki/master/master.pub
+              name: master-pub
+              subPath: master.pub
+            - mountPath: /tmp/docker-salt-minion
+              name: minion-pub
+              subPath: docker-salt-minion
+            - mountPath: /github.com/smart-proxy/config/settings.yml
+              name: settings-yml
+              subPath: settings.yml
+            - mountPath: /github.com/smart-proxy/config/settings.d/salt.yml
+              name: salt-yml
+              subPath: salt.yml
+            - mountPath: /github.com/smart-proxy/config/settings.d/dynflow.yml
+              name: dynflow-yml
+              subPath: dynflow.yml
+            - mountPath: /etc/salt/master.d/foreman-salt-master.yml
+              name: foreman-salt-master-yml
+              subPath: foreman-salt-master.yml
+            - mountPath: /etc/salt/foreman.yaml
+              name: foreman-yaml
+              subPath: foreman.yaml
+            - mountPath: /etc/supervisor/supervisord.conf
+              name: supervisor-conf
+              subPath: supervisord.conf
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: master.pem
+                path: master.pem
+            name: master-pem
+          name: master-pem
+        - configMap:
+            items:
+              - key: master.pub
+                path: master.pub
+            name: master-pub
+          name: master-pub
+        - configMap:
+            items:
+              - key: minion.pub
+                path: docker-salt-minion
+            name: minion-pub
+          name: minion-pub
+        - configMap:
+            items:
+              - key: settings.yml
+                path: settings.yml
+            name: settings-yml
+          name: settings-yml
+        - configMap:
+            items:
+              - key: salt.yml
+                path: salt.yml
+            name: salt-yml
+          name: salt-yml
+        - configMap:
+            items:
+              - key: dynflow.yml
+                path: dynflow.yml
+            name: dynflow-yml
+          name: dynflow-yml
+        - configMap:
+            items:
+              - key: foreman-salt-master.yml
+                path: foreman-salt-master.yml
+            name: foreman-salt-master-yml
+          name: foreman-salt-master-yml
+        - configMap:
+            items:
+              - key: foreman.yaml
+                path: foreman.yaml
+            name: foreman-yaml
+          name: foreman-yaml
+        - configMap:
+            items:
+              - key: supervisord.conf
+                path: supervisord.conf
+            name: supervisor-conf
+          name: supervisor-conf
+status: {}

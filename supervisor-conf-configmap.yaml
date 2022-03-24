@@ -1,0 +1,73 @@
+apiVersion: v1
+data:
+  supervisord.conf: |
+    ; supervisor config file
+
+    [unix_http_server]
+    file=/var/run/supervisor.sock   ; (the path to the socket file)
+    chmod=0700                       ; sockef file mode (default 0700)
+
+    [supervisord]
+    nodaemon=true
+    logfile=/var/log/supervisor/supervisord.log ; (main log file;default $CWD/supervisord.log)
+    pidfile=/var/run/supervisord.pid ; (supervisord pidfile;default supervisord.pid)
+    childlogdir=/var/log/supervisor            ; ('AUTO' child log dir, default $TEMP)
+
+    ; the below section must remain in the config file for RPC
+    ; (supervisorctl/web interface) to work, additional interfaces may be
+    ; added by defining them in separate rpcinterface: sections
+    [rpcinterface:supervisor]
+    supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+    [supervisorctl]
+    serverurl=unix:///var/run/supervisor.sock ; use a unix:// URL  for a unix socket
+
+    ; The [include] section can just contain the "files" setting.  This
+    ; setting can list multiple files (separated by whitespace or
+    ; newlines).  It can also contain wildcards.  The filenames are
+    ; interpreted as relative to this file.  Included files *cannot*
+    ; include files themselves.
+
+    [program:salt]
+    command=/usr/local/bin/prefix-log /usr/bin/dumb-init /usr/local/bin/saltinit
+    ;stdout_logfile=/dev/fd/1
+    ;stdout_logfile_maxbytes=0
+    ;redirect_stderr=true
+    ;command=/usr/local/bin/prefix-log /usr/sbin/nginx -g "daemon off; error_log /dev/stderr info;"
+    ;autostart=true
+    ;autorestart=true
+    ;priority=10
+    stdout_events_enabled=true
+    stderr_events_enabled=true
+    stdout_logfile=/dev/stdout
+    stdout_logfile_maxbytes=0
+    stderr_logfile=/dev/stderr
+    stderr_logfile_maxbytes=0
+    ;stopsignal=QUIT
+
+    [program:foreman-proxy]
+    command=/usr/local/bin/prefix-log bundle exec /github.com/smart-proxy/bin/smart-proxy
+    ;command=/usr/local/bin/prefix-log /usr/share/foreman-proxy/bin/smart-proxy --no-daemonize
+    ;stdout_logfile=/dev/fd/1
+    ;stdout_logfile_maxbytes=0
+    ;redirect_stderr=true
+    ;command=/usr/local/bin/prefix-log /usr/sbin/nginx -g "daemon off; error_log /dev/stderr info;"
+    ;autostart=true
+    ;autorestart=true
+    ;priority=10
+    stdout_events_enabled=true
+    stderr_events_enabled=true
+    stdout_logfile=/dev/stdout
+    stdout_logfile_maxbytes=0
+    stderr_logfile=/dev/stderr
+    stderr_logfile_maxbytes=0
+    ;stopsignal=QUIT
+
+    [include]
+    files = /etc/supervisor/conf.d/*.conf
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: salt
+  name: supervisor-conf

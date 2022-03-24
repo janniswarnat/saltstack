@@ -1,0 +1,36 @@
+apiVersion: v1
+data:
+  minion.pem: |-
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEowIBAAKCAQEAiHPu69/9Ggoxe0lRipKs5H+UwFfbvi3soAK2AuYqa4HIIT+4
+    9Lsk6lgURWAsNbnvpMXklrOrKRFxQ++3T7Ty5pudVoozK+nkb8NUZC94wyUReRVf
+    zVQycs8YiZrX70K5P0ohDYExdzux1mHP0od7nHYVDQRM8vwmre3uZy6Fv3blAT/x
+    k4ueuqQFOhumB0kIfLZnXHoKohwOIG6N2NrLvEkoUz2tCIxbYbdRAaamA9NADLg3
+    aN9WwjXm0Pi3fYM/K1Zx20Q+fburBAq1IqeY9ZzPjgMiGCImWCzo3HA7j1Em7AgD
+    CtQW2yyToibuITlUaa2E20+Y6kT/Z3VlAzIRywIDAQABAoIBABcEb2YMh5ZP597j
+    FEUqzs1QlBgJ+gBPoN2w92Dv0HIIF2k8ZYeq1eRN7UVynqKFdd42n4OoVRP9ZDzQ
+    f/yLCnpJ/7VsZItgze7oZSDtPRK1+weQynNJY6UoN/xmSUyL1dHOQFsV0vFI+Yuv
+    Pi5GOly/MnfapNxMGn42Z4OyPk94kMGwHUZeQVfhKHuAG/Ek9LRmXmoJFgAvW8MR
+    UWHT73U4s/PmtWlMWCgPuSwAOIlL46W+DIaWv9NIc479Jb2//B6s6cK268lHoIcj
+    8mRkI52mqwdte6+V4I2ETGDOmZImSkaCz0/OD49ItWDoIWdi345oqxdU9YucHeZ4
+    o4SN4xECgYEAt2R56E3GU1mVtFiGn9Q0BTjE/dPZ6tNBvgEcX5mVxuQnTQ/ibwD2
+    qgsjvP8955JdMMFYNls9Hf8zhOJAgYj6ne80QbfCQRlZc3msmS74e1mRwhyCE22q
+    DxVc3zXpKnaHH9w7PAgCNxNrr1mxdO5dc2nQDT8J9MWSYiJ/ygi4RWMCgYEAvnny
+    0pZ7xyBvupPOsqqkzDaOfXZjrwzzjiZhzRmzog2ZEHynj3MD9J90Q7sNs5gB878H
+    Hx6OFrhlowok6mtthByAGj2oygxsjKXML1l+KWa6tJCXkC5bpqPARS8/J92sNvpg
+    tUIxFkijiVrJkn9LJjtxVfyOtEVDomt0+AS/gnkCgYBYidGxLZtKMj3sS7DzCOf0
+    fWvdf6H9lPBwYujn3qZI122B7uFK5hQwFCC05iVk32zOVQnZdEMVcFfXF8Q8xXz5
+    Mrrv31+RPkPJVDzX161vH9cW99x0tMUdcxrbSJPBRGgIIbMXUGaBYIbkqVDbOxky
+    1yryujR8T8ZUSoOXbo5IMQKBgQC15Y0u78gqg95OxcIZOv5/igYO6BUP4QVhlWPG
+    UqoJsoSeivwU8FgxrmiAGcxe2mXa2G07mZlFNzjQNurD9m0yQWlQJdvff3fV5KsV
+    +JeTf+gCcSZb6PlbLHt7VkAwmO9R3U6nKhvoVNvfWpSuUuN4EkIMRFAe9Ro+q/Ga
+    vCYKuQKBgHUSLyhBRvNQpabBO6gdk0K0K05P7BiNEy/hYK5StfHUsJORg94JyAjN
+    AKeXWKtCQFoeRiPSQB8coJpM3vyXEhBtqRq7viwrwIgxkZxFLq+1LEdawFGN/8EP
+    AfvSQeoo1MX5riducmx0O+GqYy51whtJ4tgzJK1a6Ynr6+tWPEKH
+    -----END RSA PRIVATE KEY-----
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: salt-minion
+  name: minion-pem
