@@ -11,4 +11,6 @@ RUN apt-get install -y man
 RUN apt-get install -y telnet
 RUN apt-get install -y inetutils-ping
 
+RUN mkdir -p /var/lib/salt/pki/minion
+
 
