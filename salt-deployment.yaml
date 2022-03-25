@@ -67,9 +67,9 @@ spec:
             - mountPath: /github.com/smart-proxy/config/settings.d/dynflow.yml
               name: dynflow-yml
               subPath: dynflow.yml
-            - mountPath: /etc/salt/master.d/foreman-salt-master.yml
-              name: foreman-salt-master-yml
-              subPath: foreman-salt-master.yml
+            - mountPath: /etc/salt/master.d/foreman.conf
+              name: foreman-conf
+              subPath: foreman.conf
             - mountPath: /etc/salt/foreman.yaml
               name: foreman-yaml
               subPath: foreman.yaml
@@ -128,10 +128,10 @@ spec:
           name: dynflow-yml
         - configMap:
             items:
-              - key: foreman-salt-master.yml
-                path: foreman-salt-master.yml
-            name: foreman-salt-master-yml
-          name: foreman-salt-master-yml
+              - key: foreman.conf
+                path: foreman.conf
+            name: foreman-conf
+          name: foreman-conf
         - configMap:
             items:
               - key: foreman.yaml

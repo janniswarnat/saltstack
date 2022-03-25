@@ -46,8 +46,8 @@ services:
         target: "/github.com/smart-proxy/config/settings.d/salt.yml"
       - source: dynflow-yml
         target: "/github.com/smart-proxy/config/settings.d/dynflow.yml"
-      - source: foreman-salt-master-yml
-        target: "/etc/salt/master.d/foreman-salt-master.yml"
+      - source: foreman-conf
+        target: "/etc/salt/master.d/foreman.conf"
       - source: foreman-yaml
         target: "/etc/salt/foreman.yaml"
       - source: supervisor-conf
@@ -147,8 +147,8 @@ configs:
     file: "./etc_master/foreman-proxy/settings.d/salt.yml"
   dynflow-yml:
     file: "./etc_master/foreman-proxy/settings.d/dynflow.yml"
-  foreman-salt-master-yml:
-    file: "./etc_master/salt/master.d/foreman-salt-master.yml"
+  foreman-conf:
+    file: "./etc_master/salt/master.d/foreman.conf"
   foreman-yaml:
     file: "./etc_master/salt/foreman.yaml"
   supervisor-conf:
