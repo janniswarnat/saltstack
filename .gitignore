@@ -3,3 +3,4 @@ build_master/smart-proxy
 build_master/smart_proxy_dynflow
 build_master/smart_proxy_salt
 srv/pillar/default.sls
+pillar-default-configmap.yaml

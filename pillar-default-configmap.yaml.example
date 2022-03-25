@@ -2,8 +2,8 @@ apiVersion: v1
 data:
   default.sls: |
     http: curl
-    git-personal-access-token: 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
-    mqtt-password: hdC1w.zOi_AJ-8k+o^J-EU#LqF|4k1GzM
+    git-personal-access-token: ***
+    mqtt-password: ***
     user: root
     group: root
 kind: ConfigMap
