@@ -31,7 +31,7 @@ spec:
         - command:
             - /bin/sh
             - -c
-            - mkdir -p /etc/salt/pki/master/minions && cp /tmp/docker-salt-minion /etc/salt/pki/master/minions && /usr/bin/supervisord
+            - mkdir -p /srv/salt && tar -xzvf /tmp/salt-files.tar.gz -C /srv/salt && mkdir -p /etc/salt/pki/master/minions && cp /tmp/docker-salt-minion /etc/salt/pki/master/minions && /usr/bin/supervisord
           env:
             - name: SALT_API_CONFIG
               value: '{ "rest_cherrypy":{ "port":8000, "disable_ssl":true }, "external_auth":{ "sharedsecret":{ "salt":[ ".*", "@wheel", "@jobs", "@runner" ] } }, "sharedsecret":"GCUrcjS8J5wrcdtbWpjV" } '
@@ -76,6 +76,18 @@ spec:
             - mountPath: /etc/supervisor/supervisord.conf
               name: supervisor-conf
               subPath: supervisord.conf
+            - mountPath: /tmp/salt-files.tar.gz
+              name: salt-files
+              subPath: salt-files.tar.gz
+            - mountPath: /srv/pillar/top.sls
+              name: pillar-top
+              subPath: top.sls
+            - mountPath: /srv/pillar/default.sls
+              name: pillar-default
+              subPath: default.sls
+            - mountPath: /srv/pillar/raspberrypi.sls
+              name: pillar-raspberry
+              subPath: raspberrypi.sls
       restartPolicy: Always
       volumes:
         - configMap:
@@ -132,4 +144,28 @@ spec:
                 path: supervisord.conf
             name: supervisor-conf
           name: supervisor-conf
+        - configMap:
+            items:
+              - key: salt-files.tar.gz
+                path: salt-files.tar.gz
+            name: salt-files
+          name: salt-files
+        - configMap:
+            items:
+              - key: top.sls
+                path: top.sls
+            name: pillar-top
+          name: pillar-top
+        - configMap:
+            items:
+              - key: default.sls
+                path: default.sls
+            name: pillar-default
+          name: pillar-default
+        - configMap:
+            items:
+              - key: raspberrypi.sls
+                path: raspberrypi.sls
+            name: pillar-raspberry
+          name: pillar-raspberry
 status: {}

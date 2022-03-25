@@ -8,7 +8,7 @@ services:
       - "8000:8000"
       - "9000:9000"
       - "1234:1234"
-    entrypoint: ["/bin/sh", "-c" , "mkdir -p /etc/salt/pki/master/minions && cp /tmp/docker-salt-minion /etc/salt/pki/master/minions && /usr/bin/supervisord"]
+    entrypoint: ["/bin/sh", "-c" , "mkdir -p /srv/salt && tar -xzvf /tmp/salt-files.tar.gz -C /srv/salt && mkdir -p /etc/salt/pki/master/minions && cp /tmp/docker-salt-minion /etc/salt/pki/master/minions && /usr/bin/supervisord"]
     #entrypoint: ["mkdir -p /etc/salt/pki/master/minions"] # && cp /tmp/docker-salt-minion /etc/salt/pki/master/minions"] #  && /usr/bin/supervisord"]
 #    entrypoint: /usr/bin/dumb-init /usr/local/bin/saltinit
 #    volumes:
@@ -52,6 +52,14 @@ services:
         target: "/etc/salt/foreman.yaml"
       - source: supervisor-conf
         target: "/etc/supervisor/supervisord.conf"
+      - source: salt-files
+        target: "/tmp/salt-files.tar.gz"
+      - source: pillar-top
+        target: "/srv/pillar/top.sls"
+      - source: pillar-default
+        target: "/srv/pillar/default.sls"
+      - source: pillar-raspberry
+        target: "/srv/pillar/raspberrypi.sls"
     environment:
       - SALT_SHARED_SECRET=GCUrcjS8J5wrcdtbWpjV
       - 'SALT_MASTER_CONFIG={
@@ -145,3 +153,11 @@ configs:
     file: "./etc_master/salt/foreman.yaml"
   supervisor-conf:
     file: "./etc_master/supervisor/supervisord.conf"
+  salt-files:
+    file: "./srv/salt/salt-files.tar.gz"
+  pillar-top:
+    file: "./srv/pillar/top.sls"
+  pillar-default:
+    file: "./srv/pillar/default.sls"
+  pillar-raspberry:
+    file: "./srv/pillar/raspberrypi.sls"

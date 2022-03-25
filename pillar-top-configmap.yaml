@@ -1,0 +1,16 @@
+apiVersion: v1
+data:
+  top.sls: |
+    base:
+      '*':
+        - default
+      '*raspberry*':
+        - raspberrypi
+      '*linksmart*':
+        - raspberrypi
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: salt
+  name: pillar-top

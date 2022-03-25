@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  raspberrypi.sls: |
+    user: pi
+    group: pi
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: salt
+  name: pillar-raspberry
