@@ -15,9 +15,11 @@ spec:
     - name: "4505"
       port: 4505
       targetPort: 4505
+      nodePort: 30001
     - name: "4506"
       port: 4506
       targetPort: 4506
+      nodePort: 30002
     - name: "8000"
       port: 8000
       targetPort: 8000

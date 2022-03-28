@@ -8,4 +8,4 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: salt
-  name: pillar-raspberry
+  name: pillar-raspberrypi

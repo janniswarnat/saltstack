@@ -31,7 +31,7 @@ spec:
         - command:
             - /bin/sh
             - -c
-            - mkdir -p /srv/salt && tar -xzvf /tmp/salt-files.tar.gz -C /srv/salt && mkdir -p /etc/salt/pki/master/minions && cp /tmp/docker-salt-minion /etc/salt/pki/master/minions && /usr/bin/supervisord
+            - mkdir -p /srv/salt && tar -xzvf /tmp/salt-files.tar.gz -C /srv/salt && mkdir -p /etc/salt/pki/master/minions && cp /tmp/docker-salt-minion /etc/salt/pki/master/minions && cp /tmp/raspberrypi /etc/salt/pki/master/minions && /usr/bin/supervisord
           env:
             - name: SALT_API_CONFIG
               value: '{ "rest_cherrypy":{ "port":8000, "disable_ssl":true }, "external_auth":{ "sharedsecret":{ "salt":[ ".*", "@wheel", "@jobs", "@runner" ] } }, "sharedsecret":"GCUrcjS8J5wrcdtbWpjV" } '
@@ -58,6 +58,9 @@ spec:
             - mountPath: /tmp/docker-salt-minion
               name: minion-pub
               subPath: docker-salt-minion
+            - mountPath: /tmp/raspberrypi
+              name: raspberrypi-pub
+              subPath: raspberrypi
             - mountPath: /github.com/smart-proxy/config/settings.yml
               name: settings-yml
               subPath: settings.yml
@@ -86,7 +89,7 @@ spec:
               name: pillar-default
               subPath: default.sls
             - mountPath: /srv/pillar/raspberrypi.sls
-              name: pillar-raspberry
+              name: pillar-raspberrypi
               subPath: raspberrypi.sls
       restartPolicy: Always
       volumes:
@@ -108,6 +111,12 @@ spec:
                 path: docker-salt-minion
             name: minion-pub
           name: minion-pub
+        - configMap:
+            items:
+              - key: raspberrypi
+                path: raspberrypi
+            name: raspberrypi-pub
+          name: raspberrypi-pub
         - configMap:
             items:
               - key: settings.yml
@@ -166,6 +175,6 @@ spec:
             items:
               - key: raspberrypi.sls
                 path: raspberrypi.sls
-            name: pillar-raspberry
-          name: pillar-raspberry
+            name: pillar-raspberrypi
+          name: pillar-raspberrypi
 status: {}

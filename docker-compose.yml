@@ -8,7 +8,7 @@ services:
       - "8000:8000"
       - "9000:9000"
       - "1234:1234"
-    entrypoint: ["/bin/sh", "-c" , "mkdir -p /srv/salt && tar -xzvf /tmp/salt-files.tar.gz -C /srv/salt && mkdir -p /etc/salt/pki/master/minions && cp /tmp/docker-salt-minion /etc/salt/pki/master/minions && /usr/bin/supervisord"]
+    entrypoint: ["/bin/sh", "-c" , "mkdir -p /srv/salt && tar -xzvf /tmp/salt-files.tar.gz -C /srv/salt && mkdir -p /etc/salt/pki/master/minions && cp /tmp/docker-salt-minion /etc/salt/pki/master/minions && cp /tmp/raspberrypi /etc/salt/pki/master/minions && /usr/bin/supervisord"]
     configs:
       - source: master-pem
         target: "/etc/salt/pki/master/master.pem"
@@ -16,7 +16,8 @@ services:
         target: "/etc/salt/pki/master/master.pub"
       - source: minion-pub
         target: "/tmp/docker-salt-minion"
-        #target: "/etc/salt/pki/master/minions/docker-salt-minion"
+      - source: raspberrypi-pub
+        target: "/tmp/raspberrypi"
       - source: settings-yml
         target: "/github.com/smart-proxy/config/settings.yml"
       - source: salt-yml
@@ -35,7 +36,7 @@ services:
         target: "/srv/pillar/top.sls"
       - source: pillar-default
         target: "/srv/pillar/default.sls"
-      - source: pillar-raspberry
+      - source: pillar-raspberrypi
         target: "/srv/pillar/raspberrypi.sls"
     environment:
       - SALT_SHARED_SECRET=GCUrcjS8J5wrcdtbWpjV
@@ -101,6 +102,8 @@ configs:
     file: "./etc_master/salt/pki/master/master.pem"
   master-pub:
     file: "./etc_master/salt/pki/master/master.pub"
+  raspberrypi-pub:
+    file: "./etc_master/salt/pki/master/minions/raspberrypi"
   minion:
     file: "./etc_minion/salt/minion"
   settings-yml:
@@ -121,5 +124,5 @@ configs:
     file: "./srv/pillar/top.sls"
   pillar-default:
     file: "./srv/pillar/default.sls"
-  pillar-raspberry:
+  pillar-raspberrypi:
     file: "./srv/pillar/raspberrypi.sls"
