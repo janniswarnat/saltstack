@@ -34,7 +34,7 @@ RUN chmod u+rwx /usr/local/bin/saltinit
 EXPOSE 4505 4506 8000 9000
 VOLUME /etc/salt/pki/
 
-RUN USE_STATIC_REQUIREMENTS=1 pip3 install --no-cache-dir salt=="3004"
+RUN USE_STATIC_REQUIREMENTS=1 pip3 install --no-cache-dir salt=="3004.1"
 RUN su - salt -c 'salt-run salt.cmd tls.create_self_signed_cert'
 
 WORKDIR /github.com
