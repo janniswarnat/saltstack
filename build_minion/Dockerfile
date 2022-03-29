@@ -18,6 +18,4 @@ RUN apt-get update
 RUN apt-get install -y salt-minion
 
 
-RUN mkdir -p /var/lib/salt/pki/minion
-
 
