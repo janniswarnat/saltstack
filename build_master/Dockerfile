@@ -39,13 +39,13 @@ RUN su - salt -c 'salt-run salt.cmd tls.create_self_signed_cert'
 
 WORKDIR /github.com
 
-#RUN git clone https://github.com/theforeman/smart-proxy.git -b 3.2-stable
-#RUN git clone https://github.com/theforeman/smart_proxy_salt.git # -b 5.0.0 = master since 2022-02-14
-#RUN git clone https://github.com/theforeman/smart_proxy_dynflow.git # -b v0.7.0
+RUN git clone https://github.com/theforeman/smart-proxy.git -b 3.2-stable
+RUN git clone https://github.com/theforeman/smart_proxy_salt.git # -b 5.0.0 = master since 2022-02-14
+RUN git clone https://github.com/theforeman/smart_proxy_dynflow.git # -b v0.7.0
 
-ADD smart-proxy /github.com/smart-proxy
-ADD smart_proxy_dynflow /github.com/smart_proxy_dynflow
-ADD smart_proxy_salt /github.com/smart_proxy_salt
+#ADD smart-proxy /github.com/smart-proxy
+#ADD smart_proxy_dynflow /github.com/smart_proxy_dynflow
+#ADD smart_proxy_salt /github.com/smart_proxy_salt
 
 WORKDIR /github.com/smart-proxy
 RUN gem install bundler
