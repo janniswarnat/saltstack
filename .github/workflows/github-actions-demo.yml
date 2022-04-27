@@ -27,4 +27,4 @@ jobs:
         with:
           context: "{{defaultContext}}:build_master"
           push: true
-          tags: user/salt:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/salt:latest
