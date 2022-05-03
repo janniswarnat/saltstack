@@ -6,6 +6,8 @@ RUN apt-get install -y autoconf
 RUN apt-get install -y make
 RUN apt-get install -y libffi-dev
 RUN apt-get install -y libssl-dev
+RUN apt-get install -y libldap2-dev
+RUN apt-get install -y libsasl2-dev
 RUN apt-get install -y dumb-init
 RUN apt-get install -y libgit2-dev
 RUN apt-get install -y wget
@@ -33,6 +35,8 @@ ADD saltinit.py /usr/local/bin/saltinit
 RUN chmod u+rwx /usr/local/bin/saltinit
 EXPOSE 4505 4506 8000 9000
 VOLUME /etc/salt/pki/
+
+RUN pip3 install --no-cache-dir python-ldap
 
 RUN USE_STATIC_REQUIREMENTS=1 pip3 install --no-cache-dir salt=="3004.1"
 RUN su - salt -c 'salt-run salt.cmd tls.create_self_signed_cert'
