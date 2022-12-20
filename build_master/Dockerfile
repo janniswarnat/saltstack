@@ -38,18 +38,14 @@ VOLUME /etc/salt/pki/
 
 RUN pip3 install --no-cache-dir python-ldap
 
-RUN USE_STATIC_REQUIREMENTS=1 pip3 install --no-cache-dir salt=="3004.1"
+RUN USE_STATIC_REQUIREMENTS=1 pip3 install --no-cache-dir salt=="3005.1"
 RUN su - salt -c 'salt-run salt.cmd tls.create_self_signed_cert'
 
 WORKDIR /github.com
 
-RUN git clone https://github.com/theforeman/smart-proxy.git -b 3.2-stable
+RUN git clone https://github.com/theforeman/smart-proxy.git -b 3.5-stable
 RUN git clone https://github.com/theforeman/smart_proxy_salt.git # -b 5.0.0 = master since 2022-02-14
 RUN git clone https://github.com/theforeman/smart_proxy_dynflow.git # -b v0.7.0
-
-#ADD smart-proxy /github.com/smart-proxy
-#ADD smart_proxy_dynflow /github.com/smart_proxy_dynflow
-#ADD smart_proxy_salt /github.com/smart_proxy_salt
 
 WORKDIR /github.com/smart-proxy
 RUN gem install bundler
@@ -62,17 +58,9 @@ RUN bundle install
 
 ADD prefix-log /usr/local/bin/prefix-log
 
-#WORKDIR /github.com/smart_proxy_salt
-#RUN bundle install
+# Workaround
+RUN ls /github.com/smart_proxy_salt
+RUN cp /github.com/smart_proxy_salt/bin/salt_python_wrapper /usr/bin
+RUN sed -i 's/sh/bash/g' /usr/bin/salt_python_wrapper
 
-#WORKDIR /github.com/smart_proxy_dynflow
-#RUN bundle install
-#logging-journald journald-native journald_native journald-logger
 
-#RUN wget https://deb.theforeman.org/foreman.asc -O /etc/apt/trusted.gpg.d/foreman.asc
-#RUN echo "deb http://deb.theforeman.org/ bullseye 3.2" > /etc/apt/sources.list.d/foreman.list
-#RUN echo "deb http://deb.theforeman.org/ plugins 3.2" >> /etc/apt/sources.list.d/foreman.list
-#
-#RUN apt-get update
-#RUN apt-get install -y foreman-proxy
-#RUN apt-get install -y ruby-smart-proxy-salt
