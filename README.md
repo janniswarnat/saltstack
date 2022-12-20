@@ -19,6 +19,7 @@ sudo sh install_salt.sh -P
 master:
   - 192.168.178.42
   - 192.168.178.40
+  - 192.168.178.44
 sudo systemctl restart salt-minion
 sudo systemctl stop salt-minion
 ```
