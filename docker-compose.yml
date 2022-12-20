@@ -9,6 +9,8 @@ services:
       - "9000:9000"
       - "1234:1234"
     entrypoint: ["/bin/sh", "-c" , "mkdir -p /srv/salt && tar -xzvf /tmp/salt-files.tar.gz -C /srv/salt && mkdir -p /etc/salt/pki/master/minions && cp /tmp/docker-salt-minion /etc/salt/pki/master/minions && cp /tmp/raspberrypi /etc/salt/pki/master/minions && /usr/bin/supervisord"]
+    networks:
+      - salt
     configs:
       - source: master-pem
         target: "/etc/salt/pki/master/master.pem"
@@ -85,11 +87,13 @@ services:
     image: "janniswarnat/salt-minion:latest"
     build: ./build_minion
     entrypoint: ["salt-minion", "--log-level", "info"]
+    networks:
+      - salt
     configs:
       - source: minion-pem
-        target: "/var/lib/salt/pki/minion/minion.pem"
+        target: "/etc/salt/pki/minion/minion.pem"
       - source: minion-pub
-        target: "/var/lib/salt/pki/minion/minion.pub"
+        target: "/etc/salt/pki/minion/minion.pub"
       - source: minion
         target: /etc/salt/minion
 
@@ -126,3 +130,7 @@ configs:
     file: "./srv/pillar/default.sls"
   pillar-raspberrypi:
     file: "./srv/pillar/raspberrypi.sls"
+
+networks:
+  salt:
+    external: true
