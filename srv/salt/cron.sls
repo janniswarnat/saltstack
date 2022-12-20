@@ -39,10 +39,10 @@ add send_co2 cron:
     - user: {{ pillar['user'] }}
     - minute: '*/2'
 
-add nightly reboot:
-  cron.present:
-    - name: sudo reboot now 2>/dev/null
-    - identifier: nightly-reboot
-    - user: {{ pillar['user'] }}
-    - hour: 3
-    - minute: 0
+#add nightly reboot:
+#  cron.present:
+#    - name: sudo reboot now 2>/dev/null
+#    - identifier: nightly-reboot
+#    - user: {{ pillar['user'] }}
+#    - hour: 3
+#    - minute: 0
