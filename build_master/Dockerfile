@@ -38,10 +38,12 @@ VOLUME /etc/salt/pki/
 
 RUN pip3 install --no-cache-dir python-ldap
 
-RUN USE_STATIC_REQUIREMENTS=1 pip3 install --no-cache-dir salt=="3005.1"
-RUN su - salt -c 'salt-run salt.cmd tls.create_self_signed_cert'
-
 WORKDIR /github.com
+RUN git clone https://github.com/saltstack/salt
+#RUN USE_STATIC_REQUIREMENTS=1 pip3 install --no-cache-dir salt=="3005.1"
+RUN pip3 install --no-cache-dir pyzmq PyYAML pycrypto msgpack jinja2 psutil tornado
+RUN pip3 install -e ./salt
+RUN su - salt -c 'salt-run salt.cmd tls.create_self_signed_cert'
 
 RUN git clone https://github.com/theforeman/smart-proxy.git -b 3.5-stable
 RUN git clone https://github.com/theforeman/smart_proxy_salt.git # -b 5.0.0 = master since 2022-02-14

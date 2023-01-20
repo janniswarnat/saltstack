@@ -13,7 +13,7 @@
 
 # Set the location of the salt master server. If the master server cannot be
 # resolved, then the minion will fail to start.
-master: salt
+master: familie-warnat.de
 #master: host.docker.internal
 
 # Set http proxy information for the minion when doing requests
