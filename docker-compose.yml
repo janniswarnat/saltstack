@@ -8,7 +8,7 @@ services:
       - "8000:8000"
       - "9000:9000"
       - "1234:1234"
-    entrypoint: ["/bin/sh", "-c" , "mkdir -p /etc/salt/pki/master/minions && cp /tmp/docker-salt-minion /etc/salt/pki/master/minions && cp /tmp/raspberrypi /etc/salt/pki/master/minions && /usr/bin/supervisord"]
+    entrypoint: ["/bin/sh", "-c" , "mkdir -p /etc/salt/pki/master/minions && cp /tmp/docker-salt-minion /etc/salt/pki/master/minions && cp /tmp/raspberrypi /etc/salt/pki/master/minions && cp /tmp/ec2-instance /etc/salt/pki/master/minions && /usr/bin/supervisord"]
     networks:
       - salt
     volumes:
@@ -22,6 +22,8 @@ services:
         target: "/tmp/docker-salt-minion"
       - source: raspberrypi-pub
         target: "/tmp/raspberrypi"
+      - source: ec2-instance-pub
+        target: "/tmp/ec2-instance"
       - source: settings-yml
         target: "/github.com/smart-proxy/config/settings.yml"
       - source: salt-yml
@@ -46,6 +48,7 @@ services:
       - SALT_SHARED_SECRET=GCUrcjS8J5wrcdtbWpjV
       - 'SALT_MASTER_CONFIG={
                               "log_level": "info",
+                              "netapi_enable_clients": ["local"],
                               "file_roots": {
                                 "base": [
                                   "/srv/salt/"
@@ -61,7 +64,8 @@ services:
       - 'SALT_API_CONFIG={
                             "rest_cherrypy":{
                                "port":8000,
-                               "disable_ssl":true
+                               "disable_ssl":true,
+                               "debug":false
                             },
                             "external_auth":{
                                "sharedsecret":{
@@ -110,6 +114,8 @@ configs:
     file: "./etc_master/salt/pki/master/master.pub"
   raspberrypi-pub:
     file: "./etc_master/salt/pki/master/minions/raspberrypi"
+  ec2-instance-pub:
+    file: "./etc_master/salt/pki/master/minions/ec2-instance"
   minion:
     file: "./etc_minion/salt/minion"
   settings-yml:
