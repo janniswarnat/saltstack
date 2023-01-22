@@ -48,7 +48,7 @@ services:
       - SALT_SHARED_SECRET=GCUrcjS8J5wrcdtbWpjV
       - 'SALT_MASTER_CONFIG={
                               "log_level": "info",
-                              "netapi_enable_clients": ["local"],
+                              "netapi_enable_clients": ["local","wheel"],
                               "file_roots": {
                                 "base": [
                                   "/srv/salt/"
