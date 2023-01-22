@@ -41,7 +41,7 @@ RUN pip3 install --no-cache-dir python-ldap
 WORKDIR /github.com
 RUN git clone https://github.com/saltstack/salt
 #RUN USE_STATIC_REQUIREMENTS=1 pip3 install --no-cache-dir salt=="3005.1"
-RUN pip3 install --no-cache-dir pyzmq PyYAML pycrypto msgpack jinja2 psutil tornado
+RUN pip3 install --no-cache-dir pyzmq PyYAML pycrypto msgpack jinja2 psutil tornado cherrypy
 RUN pip3 install -e ./salt
 RUN su - salt -c 'salt-run salt.cmd tls.create_self_signed_cert'
 
