@@ -1,10 +1,10 @@
-janniswarnat/hello-world-express-app:
+nginxdemos/hello:
   docker_image.present:
     - tag: latest
 
-Run the app:
+helloworld:
   docker_container.running:
-    - image: janniswarnat/helloworld-express-app:latest
+    - image: nginxdemos/hello:latest
     - port_bindings:
-      - 8081:8080
+      - 8081:80
 

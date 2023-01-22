@@ -5,6 +5,6 @@ base:
     - clone-from-git
     - python-packages
     - cron
-  '*raspberry*':
+  '*ec2*':
     - docker-containers
 
