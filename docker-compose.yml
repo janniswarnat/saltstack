@@ -8,7 +8,7 @@ services:
       - "8000:8000"
       - "9000:9000"
       - "1234:1234"
-    entrypoint: ["/bin/sh", "-c" , "mkdir -p /etc/salt/pki/master/minions && cp /tmp/docker-salt-minion /etc/salt/pki/master/minions && cp /tmp/raspberrypi /etc/salt/pki/master/minions && cp /tmp/ec2-instance /etc/salt/pki/master/minions && /usr/bin/supervisord"]
+    entrypoint: ["/bin/sh", "-c" , "mkdir -p /etc/salt/pki/master/minions && cp /tmp/raspberrypi /etc/salt/pki/master/minions && /usr/bin/supervisord"]
     networks:
       - salt
     volumes:
@@ -18,12 +18,12 @@ services:
         target: "/etc/salt/pki/master/master.pem"
       - source: master-pub
         target: "/etc/salt/pki/master/master.pub"
-      - source: minion-pub
-        target: "/tmp/docker-salt-minion"
+#      - source: minion-pub
+#        target: "/tmp/docker-salt-minion"
       - source: raspberrypi-pub
         target: "/tmp/raspberrypi"
-      - source: ec2-instance-pub
-        target: "/tmp/ec2-instance"
+#      - source: ec2-instance-pub
+#        target: "/tmp/ec2-instance"
       - source: settings-yml
         target: "/github.com/smart-proxy/config/settings.yml"
       - source: salt-yml
@@ -89,19 +89,19 @@ services:
       kompose.service.type: loadbalancer
       kompose.service.expose: "true"
 
-  salt-minion:
-    image: "janniswarnat/salt-minion:latest"
-    build: ./build_minion
-    entrypoint: ["salt-minion", "--log-level", "info"]
-    networks:
-      - salt
-    configs:
-      - source: minion-pem
-        target: "/etc/salt/pki/minion/minion.pem"
-      - source: minion-pub
-        target: "/etc/salt/pki/minion/minion.pub"
-      - source: minion
-        target: /etc/salt/minion
+#  salt-minion:
+#    image: "janniswarnat/salt-minion:latest"
+#    build: ./build_minion
+#    entrypoint: ["salt-minion", "--log-level", "info"]
+#    networks:
+#      - salt
+#    configs:
+#      - source: minion-pem
+#        target: "/etc/salt/pki/minion/minion.pem"
+#      - source: minion-pub
+#        target: "/etc/salt/pki/minion/minion.pub"
+#      - source: minion
+#        target: /etc/salt/minion
 
 configs:
   minion-pem:
