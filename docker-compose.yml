@@ -47,7 +47,16 @@ services:
     environment:
       - SALT_SHARED_SECRET=GCUrcjS8J5wrcdtbWpjV
       - 'SALT_MASTER_CONFIG={
-                              "log_level": "info",
+                              "log_level": "debug",
+                              "auth.ldap.uri": "ldap://openldap-openldap-1:1389",
+                              "auth.ldap.basedn": "dc=example,dc=org",
+                              "auth.ldap.bindpw": "adminpassword",
+                              "auth.ldap.binddn": "cn=admin,dc=example,dc=org",
+                              "auth.ldap.filter": "uid={{ username }}",
+                               "auth.ldap.groupou": "users",
+                              "auth.ldap.groupclass": "posixGroup",
+                              "auth.ldap.accountattributename": "memberUid",
+                              "auth.ldap.groupattribute": "memberOf",
                               "netapi_enable_clients": ["local","wheel"],
                               "file_roots": {
                                 "base": [
@@ -68,6 +77,29 @@ services:
                                "debug":false
                             },
                             "external_auth":{
+                               "ldap":{
+                                  "readers%":[
+                                     {
+                                        "*":[
+                                           "test.ping"
+                                        ]
+                                     }
+                                  ],
+                                  "ec2admins%":[
+                                     {
+                                        "*ec2*":[
+                                           ".*"
+                                        ]
+                                     }
+                                  ],
+                                  "raspberryadmins%":[
+                                     {
+                                        "*raspberry*":[
+                                           ".*"
+                                        ]
+                                     }
+                                  ]
+                               },
                                "sharedsecret":{
                                   "salt":[
                                      ".*",
