@@ -12,7 +12,7 @@ data:
     :api_url: http://localhost:8000
     :api_auth: sharedsecret
     :api_username: salt
-    :api_password: GCUrcjS8J5wrcdtbWpjV
+    :api_password: sharedsecret
     #---
     #:enabled: true
     #:autosign_file: /etc/salt/autosign.conf

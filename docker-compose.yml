@@ -45,7 +45,7 @@ services:
       - source: pillar-raspberrypi
         target: "/srv/pillar/raspberrypi.sls"
     environment:
-      - SALT_SHARED_SECRET=GCUrcjS8J5wrcdtbWpjV
+      - SALT_SHARED_SECRET=sharedsecret
       - 'SALT_MASTER_CONFIG={
                               "log_level": "debug",
                               "auth.ldap.uri": "ldap://openldap-openldap-1:1389",
@@ -85,9 +85,9 @@ services:
                                         ]
                                      }
                                   ],
-                                  "ec2admins%":[
+                                  "eucentraladmins%":[
                                      {
-                                        "*ec2*":[
+                                        "*eu-central*":[
                                            ".*"
                                         ]
                                      }
@@ -109,7 +109,7 @@ services:
                                   ]
                                }
                             },
-                            "sharedsecret":"GCUrcjS8J5wrcdtbWpjV"
+                            "sharedsecret":"sharedsecret"
                          }
                          '
     logging:

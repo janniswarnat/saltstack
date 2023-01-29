@@ -34,11 +34,11 @@ spec:
             - mkdir -p /srv/salt && tar -xzvf /tmp/salt-files.tar.gz -C /srv/salt && mkdir -p /etc/salt/pki/master/minions && cp /tmp/docker-salt-minion /etc/salt/pki/master/minions && cp /tmp/raspberrypi /etc/salt/pki/master/minions && /usr/bin/supervisord
           env:
             - name: SALT_API_CONFIG
-              value: '{ "rest_cherrypy":{ "port":8000, "disable_ssl":true }, "external_auth":{ "sharedsecret":{ "salt":[ ".*", "@wheel", "@jobs", "@runner" ] } }, "sharedsecret":"GCUrcjS8J5wrcdtbWpjV" } '
+              value: '{ "rest_cherrypy":{ "port":8000, "disable_ssl":true }, "external_auth":{ "sharedsecret":{ "salt":[ ".*", "@wheel", "@jobs", "@runner" ] } }, "sharedsecret":"sharedsecret" } '
             - name: SALT_MASTER_CONFIG
               value: '{ "log_level": "info", "file_roots": { "base": [ "/srv/salt/" ] }, "pillar_roots": { "base": [ "/srv/pillar/" ] } } '
             - name: SALT_SHARED_SECRET
-              value: GCUrcjS8J5wrcdtbWpjV
+              value: sharedsecret
           image: janniswarnat/salt:latest
           name: salt
           ports:
