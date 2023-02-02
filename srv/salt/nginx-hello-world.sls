@@ -1,12 +1,19 @@
 pkg-uptodate:
   pkg.uptodate:
     - refresh : True
+    - security: True
+
+python3:
+  pkg:
+    - installed
+    - require:
+      - pkg: pkg-uptodate
   
 docker:
   pkg:
     - installed
     - require:
-      - pkg: pkg-uptodate
+      - pkg: python3
   pip:
     - installed
     - require:
