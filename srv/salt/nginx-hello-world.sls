@@ -8,12 +8,48 @@ python3:
     - installed
     - require:
       - pkg: pkg-uptodate
-  
-docker:
+
+python3-pip:
   pkg:
     - installed
     - require:
       - pkg: python3
+
+docker.io:
+  pkg:
+    - installed
+    - require:
+      - pkg: python3-pip
+
+#docker-ce-cli:
+#  pkg:
+#    - installed
+#    - require:
+#      - pkg: docker-ce
+
+#containerd.io:
+#  pkg:
+#    - installed
+#    - require:
+#      - pkg: docker-ce-cli
+
+#docker-buildx-plugin:
+#  pkg:
+#    - installed
+#    - require:
+#      - pkg: docker-ce-cli
+
+#docker-compose-plugin:
+#  pkg:
+#    - installed
+#    - require:
+#      - pkg: docker-buildx-plugin,
+
+docker:
+  pkg:
+    - installed
+    - require:
+      - pkg: docker.io
   pip:
     - installed
     - require:
