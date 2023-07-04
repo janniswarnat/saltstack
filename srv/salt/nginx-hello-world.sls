@@ -1,25 +1,25 @@
-pkg-uptodate:
-  pkg.uptodate:
-    - refresh : True
-    - security: True
+#pkg-uptodate:
+#  pkg.uptodate:
+#    - refresh : True
+#    - security: True
 
-python3:
-  pkg:
-    - installed
-    - require:
-      - pkg: pkg-uptodate
+#python3:
+#  pkg:
+#    - installed
+#    - require:
+#      - pkg: pkg-uptodate
 
-python3-pip:
-  pkg:
-    - installed
-    - require:
-      - pkg: python3
+#python3-pip:
+#  pkg:
+#    - installed
+#    - require:
+#      - pkg: python3
 
-docker.io:
-  pkg:
-    - installed
-    - require:
-      - pkg: python3-pip
+#docker.io:
+#  pkg:
+#    - installed
+#    - require:
+#      - pkg: python3-pip
 
 #docker-ce-cli:
 #  pkg:
@@ -45,25 +45,25 @@ docker.io:
 #    - require:
 #      - pkg: docker-buildx-plugin,
 
-docker:
-  pkg:
-    - installed
-    - require:
-      - pkg: docker.io
-  pip:
-    - installed
-    - require:
-      - pkg: docker
-  service.running:
-    - enable: True
-    - require:
-      - pip: docker
+#docker:
+#  pkg:
+#    - installed
+#    - require:
+#      - pkg: docker.io
+#  pip:
+#    - installed
+#    - require:
+#      - pkg: docker
+#  service.running:
+#    - enable: True
+#    - require:
+#      - pip: docker
 
 nginxdemos/hello:
   docker_image.present:
     - tag: latest
-    - require:
-      - service: docker
+#    - require:
+#      - service: docker
   docker_container.running:
     - name: nginx-hello-world
     - image: nginxdemos/hello:latest
