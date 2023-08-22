@@ -5,9 +5,9 @@ services:
     build: ./build_master
     ports:
       - "4505-4506:4505-4506"
-      - "8000:8000"
-      - "9000:9000"
-      - "1234:1234"
+      - "8100:8000"
+#      - "9000:9000"
+#      - "1234:1234"
     entrypoint: ["/bin/sh", "-c" , "mkdir -p /etc/salt/pki/master/minions && cp /tmp/raspberrypi /etc/salt/pki/master/minions && /usr/bin/supervisord"]
     networks:
       - salt
@@ -53,11 +53,25 @@ services:
                               "auth.ldap.bindpw": "adminpassword",
                               "auth.ldap.binddn": "cn=admin,dc=example,dc=org",
                               "auth.ldap.filter": "uid={{ username }}",
-                               "auth.ldap.groupou": "users",
+                              "auth.ldap.groupou": "users",
                               "auth.ldap.groupclass": "posixGroup",
                               "auth.ldap.accountattributename": "memberUid",
                               "auth.ldap.groupattribute": "memberOf",
                               "netapi_enable_clients": ["local","wheel"],
+                              "fileserver_backend": ["gitfs","roots"],
+                              "gitfs_mountpoint": "salt://gitfiles",
+                              "gitfs_base":"main",
+                              "gitfs_user":"janniswarnat",
+                              "gitfs_password":"personalaccestoken",
+                              "gitfs_remotes": [
+                                  {
+                                    "https://github.com/janniswarnat/salt-files.git": [
+                                      {
+                                        "mountpoint": "salt://gitfiles"
+                                      }
+                                    ]
+                                  }
+                                ],
                               "file_roots": {
                                 "base": [
                                   "/srv/salt/"

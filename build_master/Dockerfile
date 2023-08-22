@@ -9,7 +9,6 @@ RUN apt-get install -y libssl-dev
 RUN apt-get install -y libldap2-dev
 RUN apt-get install -y libsasl2-dev
 RUN apt-get install -y dumb-init
-RUN apt-get install -y libgit2-dev
 RUN apt-get install -y wget
 RUN apt-get install -y curl
 RUN apt-get install -y vim
@@ -41,12 +40,12 @@ EXPOSE 4505 4506 8000 9000
 VOLUME /etc/salt/pki/
 
 RUN pip3 install --no-cache-dir python-ldap
+RUN pip3 install --no-cache-dir pyzmq PyYAML pycrypto msgpack jinja2 psutil tornado cherrypy GitPython pygit2
 
 WORKDIR /github.com
 #RUN git clone https://github.com/saltstack/salt
 RUN git clone --depth 1 --branch v3006.0rc1 https://github.com/saltstack/salt
 RUN USE_STATIC_REQUIREMENTS=1 pip3 install --no-cache-dir salt=="v3006.0rc1"
-RUN pip3 install --no-cache-dir pyzmq PyYAML pycrypto msgpack jinja2 psutil tornado cherrypy
 RUN pip3 install -e ./salt
 RUN su - salt -c 'salt-run salt.cmd tls.create_self_signed_cert'
 
