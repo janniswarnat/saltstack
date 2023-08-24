@@ -8,7 +8,7 @@ services:
       - "8100:8000"
 #      - "9000:9000"
 #      - "1234:1234"
-    entrypoint: ["/bin/sh", "-c" , "mkdir -p /etc/salt/pki/master/minions && cp /tmp/raspberrypi /etc/salt/pki/master/minions && /usr/bin/supervisord"]
+    entrypoint: ["/bin/sh", "-c" , "mkdir -p /etc/salt/pki/master/minions && cp /tmp/csc-vm-* /etc/salt/pki/master/minions && /usr/bin/supervisord"]
     networks:
       - salt
     volumes:
@@ -20,10 +20,14 @@ services:
         target: "/etc/salt/pki/master/master.pub"
 #      - source: minion-pub
 #        target: "/tmp/docker-salt-minion"
-      - source: raspberrypi-pub
-        target: "/tmp/raspberrypi"
+#      - source: raspberrypi-pub
+#        target: "/tmp/raspberrypi"
 #      - source: ec2-instance-pub
 #        target: "/tmp/ec2-instance"
+      - source: csc-vm-1-pub
+        target: "/tmp/csc-vm-1"
+      - source: csc-vm-2-pub
+        target: "/tmp/csc-vm-2"
       - source: settings-yml
         target: "/github.com/smart-proxy/config/settings.yml"
       - source: salt-yml
@@ -62,7 +66,7 @@ services:
                               "gitfs_mountpoint": "salt://gitfiles",
                               "gitfs_base":"main",
                               "gitfs_user":"janniswarnat",
-                              "gitfs_password":"personalaccestoken",
+                              "gitfs_password":"personalaccesstoken",
                               "gitfs_remotes": [
                                   {
                                     "https://github.com/janniswarnat/salt-files.git": [
@@ -162,6 +166,10 @@ configs:
     file: "./etc_master/salt/pki/master/minions/raspberrypi"
   ec2-instance-pub:
     file: "./etc_master/salt/pki/master/minions/ec2-instance"
+  csc-vm-1-pub:
+    file: "./etc_master/salt/pki/master/minions/csc-vm-1"
+  csc-vm-2-pub:
+    file: "./etc_master/salt/pki/master/minions/csc-vm-2"
   minion:
     file: "./etc_minion/salt/minion"
   settings-yml:

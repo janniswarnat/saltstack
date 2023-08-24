@@ -10,77 +10,27 @@
 #    - source:
 #      - salt://images/nginxdemos-hello.tar
 
-/tmp/2_edgeRealTimeBroker:
+/tmp/2_edgeRealTimeBrokerViaSalt:
   file.recurse:
     - source:
       - salt://gitfiles/2_edgeRealTimeBroker
 
-/tmp/1_dataCollectionPlatform:
+/tmp/1_dataCollectionPlatformViaSalt:
   file.recurse:
     - source:
       - salt://gitfiles/1_dataCollectionPlatform
 
-#pkg-uptodate:
-#  pkg.uptodate:
-#    - refresh : True
-#    - security: True
-
-#python3:
-#  pkg:
-#    - installed
-#    - require:
-#      - pkg: pkg-uptodate
-  
-# This will not work without Internet, we assume docker and docker-compose to be installed as a prerequisite
-#docker:
-#  pkg:
-#    - installed
-#    - require:
-#      - pkg: python3
-#  pip:
-#    - installed
-#    - require:
-#      - pkg: docker
-#  service.running:
-#    - enable: True
-#    - require:
-#      - pip: docker
-#  group.present:
-#    - addusers:
-#      - ec2-user
-#    - require:
-#      - pkg: docker
-
-#docker-compose:
-#  pip:
-#    - installed
-#    - require:
-#      - pip: docker
-
-#nginxdemos/hello:
-#  docker_image.present:
-#    - tag: latest
-#    - load: salt://images/nginxdemos-hello.tar
-#    - require:
-#      - service: docker
+datacollectionplatform:
+  docker_image.present:
+    - tag: local
 
 dockercompose.build:
   module.run:
-    - path: /tmp/1_dataCollectionPlatform  
-
-#dockercompose.create:
-#  module.run:
-#    - path: /tmp/docker-compose.yml
-#    - docker_compose: |+
-#      services:
-#        nginx-hello-world:
-#          image: nginxdemos/hello:latest
-#          ports:
-#            - 8081:8080
+    - path: /tmp/1_dataCollectionPlatformViaSalt  
 
 dockercompose.up:
   module.run:
-    - path: /tmp/1_dataCollectionPlatform/docker-compose.yml
+    - path: /tmp/1_dataCollectionPlatformViaSalt/docker-compose.yml
 
 #  docker_container.running:
 #    - name: nginx-hello-world
